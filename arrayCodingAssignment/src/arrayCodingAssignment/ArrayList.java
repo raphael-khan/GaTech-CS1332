@@ -40,9 +40,28 @@ public class ArrayList<T> {
      * @param data the data to add to the front of the list
      * @throws java.lang.IllegalArgumentException if data is null
      */
-    public void addToFront(T data) {
-        // WRITE YOUR CODE HERE (DO NOT MODIFY METHOD HEADER)!
-    }
+	public void addToFront(T data) {
+		if (data != null) {
+			
+			// Check if array is full. 
+			if (size == backingArray.length) {
+				T[] newBackingArr = (T[]) new Object[backingArray.length * 2];
+				for (int i = 0; i < size; i ++) {
+					newBackingArr[i] = backingArray[i];
+				}
+				backingArray = newBackingArr;
+			} else {
+				
+				for (int i = backingArray.length - 1; i > 0; i--) {
+					backingArray[i] = backingArray[i - 1];
+				}
+			}
+			
+			backingArray[0] = data;
+			
+			size++;
+		}
+	}
 
     /**
      * Adds the data to the back of the list.
@@ -53,7 +72,25 @@ public class ArrayList<T> {
      * @throws java.lang.IllegalArgumentException if data is null
      */
     public void addToBack(T data) {
-        // WRITE YOUR CODE HERE (DO NOT MODIFY METHOD HEADER)!
+        if (data != null) {
+        	
+        	// Check if array is full. 
+        	if (size == backingArray.length) {
+        		// Resize. 
+        		T[] newBackingArr = (T[]) new Object [backingArray.length * 2];
+        		for (int i =0; i < size; i ++) {
+        			// copy over to the new arr.
+        			newBackingArr[i] = backingArray[i];
+        		}
+        		
+        		backingArray = newBackingArr;
+        	}
+        	// Add the data regardless of resize or not. 
+        	backingArray[size] = data;
+        	
+        	// Increment size of the array.
+        	size++;
+        }
     }
 
     /**
@@ -64,12 +101,26 @@ public class ArrayList<T> {
      * This remove may require elements to be shifted.
      *
      * Method should run in O(n) time.
+     * @return 
      *
-     * @return the data formerly located at the front of the list
      * @throws java.util.NoSuchElementException if the list is empty
      */
     public T removeFromFront() {
-        // WRITE YOUR CODE HERE (DO NOT MODIFY METHOD HEADER)!
+    	
+    	T dataRemoved = backingArray[0];
+    	
+    	if (size != 0) {
+    		// Shift the elements to left.
+    		for (int i = 1; i < size; i++) {
+    			backingArray[i - 1 ] = backingArray[i];
+    		}
+    		// update size. 
+    		size--;
+    		
+    		
+    	}
+		return dataRemoved;	
+        
     }
 
     /**
@@ -83,7 +134,16 @@ public class ArrayList<T> {
      * @throws java.util.NoSuchElementException if the list is empty
      */
     public T removeFromBack() {
-        // WRITE YOUR CODE HERE (DO NOT MODIFY METHOD HEADER)!
+    	
+    	T dataRemoved = null;
+    	
+        if (size != 0 ) {
+        	dataRemoved = backingArray[backingArray.length-1];
+        	backingArray[backingArray.length - 1 ] = null;
+        	size --;
+        }
+        
+        return dataRemoved;
     }
 
     /**
@@ -111,4 +171,6 @@ public class ArrayList<T> {
         // DO NOT MODIFY THIS METHOD!
         return size;
     }
+    
+
 }
