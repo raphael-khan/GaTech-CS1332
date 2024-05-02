@@ -16,4 +16,4 @@ Here is the stack trace to help identify the error in your code:
 [Test Failure: validSize] [-0.43] : Size variable could not be validated for the following method(s) due to early test failure(s): addToBack, addToFront. 
 
 
-Score: 8.7 / 10.0
+Score: 8.7 / 10.0.

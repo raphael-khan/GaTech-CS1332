@@ -10,7 +10,7 @@ public class ArrayList<T> {
 	/*
 	 * The initial capacity of the ArrayList.
 	 *
-	 * DO NOT MODIFY THIS VARIABLE!
+	 * DO NOT MODIFY THIS VARIABLE!!
 	 */
 	public static final int INITIAL_CAPACITY = 9;
 
