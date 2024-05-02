@@ -50,13 +50,21 @@ public class ArrayList<T> {
 		if (size == INITIAL_CAPACITY) {
 			T[] newBackingArr = (T[]) new Object[backingArray.length * 2];
 			for (int i = 0; i < size; i++) {
-				newBackingArr[i] = backingArray[i];
+				/**
+				 *  Keep the first index empty when resizing and adding to the front. 
+				 */
+				
+				newBackingArr[i + 1] = backingArray[i];
 			}
+			
 			backingArray = newBackingArr;
+			
+			size = size * 2;
+			
 		} else {
-
-			for (int i = backingArray.length - 1; i > 0; i--) {
-				backingArray[i] = backingArray[i - 1];
+			// start from back and shift elements to right. 
+			for (int i = size - 1; i >= 0; i--) {
+				backingArray[i + 1] = backingArray[i];
 			}
 		}
 
@@ -88,8 +96,10 @@ public class ArrayList<T> {
 			}
 
 			backingArray = newBackingArr;
+			
+			size = size * 2;
 		}
-		// Add the data regardless of resize or not.
+		// Add the data regardless to the next available index.
 		backingArray[size] = data;
 
 		// Increment size of the array.
@@ -148,9 +158,9 @@ public class ArrayList<T> {
 		}
 
 
-		T dataRemoved = backingArray[backingArray.length - 1];
+		T dataRemoved = backingArray[size - 1];
 		
-		backingArray[backingArray.length - 1] = null;
+		backingArray[size- 1] = null;
 		
 		size--;
 
