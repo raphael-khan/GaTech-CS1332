@@ -2,10 +2,12 @@ package linkedLists;
 
 import java.util.NoSuchElementException;
 
+
 /**
  * Your implementation of a Singly-Linked List.
+ * @param <Node>
  */
-public class SinglyLinkedList<T> {
+public class SinglyLinkedList<T, Node> {
 
     /*
      * Do not add new instance variables or modify existing ones.
@@ -27,7 +29,24 @@ public class SinglyLinkedList<T> {
      * @throws java.lang.IllegalArgumentException if data is null
      */
     public void addToFront(T data) {
-        // WRITE YOUR CODE HERE (DO NOT MODIFY METHOD HEADER)!
+    	
+        if (data == null) {
+        	throw new IllegalArgumentException("No data is passed in.");
+        }
+        // check if list is empty. 
+        if (head == null) {
+        	head = new SinglyLinkedListNode<T>(data);
+        	size++;
+        }
+        // if not empty, then create a new node. 
+        else {
+        	SinglyLinkedListNode<T> newNode = new SinglyLinkedListNode<T>(data);
+        	// set new nodes next ref to head. 
+        	newNode.setNext(head);
+        	// set the head ref to the new node. 
+        	head = newNode;
+        	size++;
+        }
     }
 
     /**
@@ -39,7 +58,25 @@ public class SinglyLinkedList<T> {
      * @throws java.lang.IllegalArgumentException if data is null
      */
     public void addToBack(T data) {
-        // WRITE YOUR CODE HERE (DO NOT MODIFY METHOD HEADER)!
+        if (data == null) {
+        	throw new IllegalArgumentException("data passed is null");
+        } 
+        // if list is empty.
+        if (head == null) {
+        	head = new SinglyLinkedListNode<T>(data);
+        	size++;
+        }
+        else {
+        	// create currNode and point it to head. 
+        	SinglyLinkedListNode<T> currNode = head; 
+        	while (currNode.getNext() != null) {
+        		// move currNode forward till the last node. 
+        		currNode = currNode.getNext();
+        	}
+        	// once last node is reached, currNode.next will be null.
+        	SinglyLinkedListNode<T> newNode = new SinglyLinkedListNode<T>(data);
+        	currNode.setNext(newNode);
+        }
     }
 
     /**
@@ -51,8 +88,14 @@ public class SinglyLinkedList<T> {
      * @throws java.util.NoSuchElementException if the list is empty
      */
     public T removeFromFront() {
+    	
+    	// If list is empty. 
+    	if (head == null) {
+    		throw new NoSuchElementException("List is empty");
+    	} else {
+    		head = head.getNext();
+    	}
 		return null;
-        // WRITE YOUR CODE HERE (DO NOT MODIFY METHOD HEADER)!
     }
 
     /**
@@ -64,8 +107,23 @@ public class SinglyLinkedList<T> {
      * @throws java.util.NoSuchElementException if the list is empty
      */
     public T removeFromBack() {
+    	// if list is empty. 
+    	if (head == null) {
+    		throw new NoSuchElementException("List is empty");
+    		// if list only contains 1 node. 
+    	} else if(head.getNext() == null) {
+    		head = null;
+    	} else {
+    		// initialize current node at head. 
+    		SinglyLinkedListNode<T> currNode = head;
+    		// loop while curr.next.next is not null to stop before the last node. 
+    		while (currNode.getNext().getNext() != null) {
+    			currNode = currNode.getNext();
+    		}
+    		// right before next node. set the next ref to null. 
+    		currNode.setNext(null);
+    	}
 		return null;
-        // WRITE YOUR CODE HERE (DO NOT MODIFY METHOD HEADER)!
     }
 
     /**
