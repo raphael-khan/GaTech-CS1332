@@ -31,22 +31,23 @@ public class SinglyLinkedList<T, Node> {
     public void addToFront(T data) {
     	
         if (data == null) {
-        	throw new IllegalArgumentException("No data is passed in.");
+        	throw new IllegalArgumentException("Data cannot be null.");
         }
-        // check if list is empty. 
+        
+        SinglyLinkedListNode<T> newNode = new SinglyLinkedListNode<>(data);
+        
+        // check if list is empty, the new node is both head and tail.
         if (head == null) {
-        	head = new SinglyLinkedListNode<T>(data);
-        	size++;
-        }
-        // if not empty, then create a new node. 
-        else {
-        	SinglyLinkedListNode<T> newNode = new SinglyLinkedListNode<T>(data);
-        	// set new nodes next ref to head. 
-        	newNode.setNext(head);
-        	// set the head ref to the new node. 
         	head = newNode;
-        	size++;
+        	tail = newNode;
         }
+        // if the list is not empty. 
+        else {
+        	newNode.setNext(head);
+        	head = newNode;
+        }
+        
+        size++;
     }
 
     /**
@@ -58,25 +59,25 @@ public class SinglyLinkedList<T, Node> {
      * @throws java.lang.IllegalArgumentException if data is null
      */
     public void addToBack(T data) {
+    	
         if (data == null) {
-        	throw new IllegalArgumentException("data passed is null");
-        } 
-        // if list is empty.
+        	throw new IllegalArgumentException("Data cannot be null.");
+        }
+        
+        SinglyLinkedListNode<T> newNode = new SinglyLinkedListNode<>(data);
+        
         if (head == null) {
-        	head = new SinglyLinkedListNode<T>(data);
-        	size++;
+        	// if list is empty, the new node is both head and tail. 
+        	head = newNode;
+        	tail = newNode;
         }
         else {
-        	// create currNode and point it to head. 
-        	SinglyLinkedListNode<T> currNode = head; 
-        	while (currNode.getNext() != null) {
-        		// move currNode forward till the last node. 
-        		currNode = currNode.getNext();
-        	}
-        	// once last node is reached, currNode.next will be null.
-        	SinglyLinkedListNode<T> newNode = new SinglyLinkedListNode<T>(data);
-        	currNode.setNext(newNode);
+        	// if list is not empty, link the tail's next to the new node to run in O(1). 
+        	tail.setNext(newNode);
+        	tail = newNode;
         }
+        
+        size++;
     }
 
     /**
@@ -92,10 +93,23 @@ public class SinglyLinkedList<T, Node> {
     	// If list is empty. 
     	if (head == null) {
     		throw new NoSuchElementException("List is empty");
-    	} else {
-    		head = head.getNext();
+    	} 
+    	
+    	// Get the data from the head node. 
+    	T removedData = head.getData();
+    	
+    	// Update the head to the next node. 
+    	head = head.getNext();
+    	
+    	// if the list is now empty because there was only 1 node. 
+    	if (head == null) {
+    		tail = null;
     	}
-		return null;
+    	
+    	// Decrement the size. 
+    	size--;
+    	
+		return removedData;
     }
 
     /**
@@ -110,20 +124,37 @@ public class SinglyLinkedList<T, Node> {
     	// if list is empty. 
     	if (head == null) {
     		throw new NoSuchElementException("List is empty");
-    		// if list only contains 1 node. 
-    	} else if(head.getNext() == null) {
-    		head = null;
-    	} else {
-    		// initialize current node at head. 
-    		SinglyLinkedListNode<T> currNode = head;
-    		// loop while curr.next.next is not null to stop before the last node. 
-    		while (currNode.getNext().getNext() != null) {
-    			currNode = currNode.getNext();
-    		}
-    		// right before next node. set the next ref to null. 
-    		currNode.setNext(null);
     	}
-		return null;
+    	
+    	// if list only contains 1 node. 
+    	if(head.getNext() == null) {
+    		T removedData = head.getData();
+    		head = null;
+    		tail = null;
+    		size--;
+    		return removedData;
+    	}
+    	
+    	// Initialize current node at head. 
+    	SinglyLinkedListNode<T> currNode = head;
+    	// Loop until currNode is the node right before the last node. 
+    	while (currNode.getNext().getNext() != null) {
+    		currNode = currNode.getNext();
+    	}
+    	
+    	// Get the data from last node. 
+    	T removedData = currNode.getNext().getData();
+    	
+    	// Set the next reference of the node before the last node to null. 
+    	currNode.setNext(null);
+    	
+    	// update the tail to the new last node. 
+    	tail = currNode;
+    	
+    	// Decrement the size. 
+    	size--;
+    	
+		return removedData;
     }
 
     /**
