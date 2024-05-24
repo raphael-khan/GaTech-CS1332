@@ -1,4 +1,4 @@
-package arrayCodingAssignment;
+package arrays;
 
 import java.util.NoSuchElementException;
 
