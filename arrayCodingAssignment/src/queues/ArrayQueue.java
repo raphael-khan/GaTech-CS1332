@@ -45,7 +45,32 @@ public class ArrayQueue<T> {
      * @throws java.lang.IllegalArgumentException if data is null
      */
     public void enqueue(T data) {
-        // WRITE YOUR CODE HERE (DO NOT MODIFY METHOD HEADER)!
+        // check if the data is null. 
+    	if (data == null) {
+    		throw new IllegalArgumentException("Data cannot be null.");
+    	}
+    	// check if the array is full and needs resized.
+    	if (size == backingArray.length) {
+    		T[] newArray = (T[]) new Object[backingArray.length * 2];
+    		
+    		// copy elements from old array to new array. 
+    		for (int i =0; i < size; i++) {
+    			newArray[i] = backingArray[(front + i) % backingArray.length];
+    		}
+    		
+    		// update the backing array, reset front to 0.
+    		backingArray = newArray;
+    		front = 0;
+    	}
+    	
+    	// calculate the index for the new element. 
+    	int index = (front + size) % backingArray.length;
+    	
+    	// Add the new element to the array. 
+    	backingArray[index] = data;
+    	
+    	// increment the size.
+    	size++;
     }
 
     /**
@@ -64,8 +89,25 @@ public class ArrayQueue<T> {
      * @throws java.util.NoSuchElementException if the queue is empty
      */
     public T dequeue() {
-		return null;
-        // WRITE YOUR CODE HERE (DO NOT MODIFY METHOD HEADER)!
+    	// check if the queue is empty.
+    	if (size == 0) {
+    		throw new NoSuchElementException("Queue is empty");
+    	}
+    	
+    	// get the data from the front of the queue. 
+    	T data = backingArray[front];
+    	
+    	// set the front element to null.
+    	backingArray[front] = null;
+    	
+    	// update the front index.
+    	front = (front + 1) % backingArray.length;
+    	
+    	// decrement the size. 
+    	size--;
+    	
+		return data;
+
     }
 
     /**
