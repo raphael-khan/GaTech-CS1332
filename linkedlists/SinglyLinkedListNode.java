@@ -1,4 +1,4 @@
-package linkedLists;
+package linkedlists;
 
 /**
  * Node class used for implementing the SinglyLinkedList.

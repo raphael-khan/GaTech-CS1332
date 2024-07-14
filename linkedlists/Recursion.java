@@ -1,4 +1,4 @@
-package linkedLists;
+package linkedlists;
 
 import org.w3c.dom.Node;
 
