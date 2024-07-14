@@ -34,7 +34,30 @@ public class BST<T extends Comparable<? super T>> {
      * @throws java.lang.IllegalArgumentException If data is null.
      */
     public void add(T data) {
-        // WRITE YOUR CODE HERE (DO NOT MODIFY METHOD HEADER)!
+        if (data == null ) {
+        	throw new IllegalArgumentException("data cannot be null");
+        }
+        
+        // helper method. 
+        root = addRecursive(root, data);
+    }
+    
+    private BSTNode<T> addRecursive(BSTNode<T> node, T data) {
+    	// base case.
+    	if (node == null) {
+    		size++;
+    		return new BSTNode<>(data);
+    	}
+    	// recursive case.
+    	int comparison = data.compareTo(node.getData());
+    	if (comparison < 0) {
+    		node.setLeft(addRecursive(node.getLeft(), data));
+    	} else if (comparison > 0 ) {
+    		node.setRight(addRecursive(node.getRight(), data));
+    	}
+    	
+    	// if comparison ==0 , do nothing ( no duplicates)
+    	return node;
     }
 
     /**
@@ -65,7 +88,58 @@ public class BST<T extends Comparable<? super T>> {
      * @throws java.util.NoSuchElementException   If the data is not in the tree.
      */
     public T remove(T data) {
-        // WRITE YOUR CODE HERE (DO NOT MODIFY METHOD HEADER)!
+    	
+        if (data == null) {
+        	throw new IllegalArgumentException("data cannot be null");
+        }
+        BSTNode<T> dummy = new BSTNode<>(null); // Dummy node to hold the removed data. 
+        root = removeRecursive(root, data, dummy);
+        if (dummy.getData() == null) {
+        	throw new NoSuchElementException("data not found in the node");
+        }
+        size--;
+        return dummy.getData();
+    }
+    
+    // helper method. 
+    private BSTNode<T> removeRecursive(BSTNode<T> node, T data, BSTNode<T> dummy) {
+    	if (node == null) {
+    		return null;
+    	}
+    	
+    	int comparison = data.compareTo(node.getData());
+    	if (comparison < 0) {
+    		node.setLeft(removeRecursive(node.getLeft(), data, dummy));
+    	} else if (comparison > 0 ) {
+    		node.setRight(removeRecursive(node.getRight(), data, dummy));
+    	} else {
+    		dummy.setData(node.getData());
+    		// leaf node. no children.
+    		if (node.getLeft() == null && node.getRight() == null) {
+    			return null;
+    			// one child. 
+    		} else if (node.getLeft() != null && node.getRight() == null) {
+    			return node.getLeft();
+    		} else if (node.getLeft() == null && node.getRight() != null) {
+    			return node.getRight();
+    			// two children.
+    		} else {
+    			BSTNode<T> successorDummy = new BSTNode<>(null);
+    			node.setRight(removeSuccessor(node.getRight(), successorDummy));
+    			node.setData(successorDummy.getData());
+    		}
+    	}
+    	return node;
+    }
+    
+    // helper method. 
+    private BSTNode<T> removeSuccessor(BSTNode<T> node, BSTNode<T> dummy){
+    	if (node.getLeft() == null) {
+    		dummy.setData(node.getData());
+    		return node.getRight();
+    	}
+    	node.setLeft(removeSuccessor(node.getLeft(), dummy));
+    	return node;
     }
 
     /**
